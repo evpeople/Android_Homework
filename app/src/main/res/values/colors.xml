@@ -11,4 +11,5 @@
     <color name="bg_grey">#878684</color>
     <color name="dot_black">#565552</color>
     <color name="dot_white">#E8E5DE</color>
+    <color name="dot_blue">#0080FF</color>
 </resources>

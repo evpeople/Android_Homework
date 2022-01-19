@@ -8,6 +8,7 @@ import android.view.ViewConfiguration;
 import android.widget.ImageView;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private float lastMotionX;
     private float lastMotionY;
     private int touchIndex;
+    private static boolean first = true;
 
     private static final int STATE_IDLE = 0;
     private static final int STATE_WAITING_DRAG = 1;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         backupDot = findViewById(R.id.backup_dot);
 
         findViewById(R.id.btn_restart).setOnClickListener(v -> initLevel());
+        findViewById(R.id.btn_init).setOnClickListener(v -> init());
 
         initLevel();
     }
@@ -67,22 +70,52 @@ public class MainActivity extends AppCompatActivity {
      * 初始化关卡
      * （可以在这里提高一下关卡难度，或者修改为多关卡）
      */
+    private void init(){
+        first=true;
+        initLevel();
+    }
     private void initLevel() {
         Arrays.fill(containerArr, 0);
-        containerArr[0] = 1;
-        containerArr[2] = 1;
-        containerArr[4] = 1;
-        containerArr[6] = 1;
-        containerArr[7] = 1;
-        containerArr[8] = 1;
         Arrays.fill(dotArr, 0);
-        dotArr[0] = 1;
-        dotArr[1] = 1;
-        dotArr[2] = 1;
-        dotArr[3] = 1;
-        dotArr[5] = 1;
-        dotArr[7] = 1;
+        if (first) {
+            first = false;
+            containerArr[0] = 1;
+            containerArr[2] = 1;
+            containerArr[7] = 1;
+            dotArr[0] = 1;
+            dotArr[2] = 1;
+            dotArr[7] = 1;
+
+        } else {
+
+            HashSet<Integer> set = new HashSet<>();
+            randomSet(0, 8, 3, set);
+            for (Integer i :
+                    set) {
+                containerArr[i] = 1;
+            }
+            set.clear();
+            randomSet(0, 8, 3, set);
+            for (Integer i :
+                    set) {
+                dotArr[i] = 1;
+            }
+        }
         refreshView();
+    }
+
+    private static void randomSet(int min, int max, int n, HashSet<Integer> set) {
+        if (n > (max - min + 1) || max < min) {
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            int num = (int) (Math.random() * (max - min)) + min;
+            set.add(num);
+        }
+        int setSize = set.size();
+        if (setSize < n) {
+            randomSet(min, max, n - setSize, set);
+        }
     }
 
     /**
@@ -98,7 +131,11 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = 0; i < 9; i++) {
             if (dotArr[i] == 1) {
-                dotViewArr[i].setImageResource(R.drawable.shape_dot_white);
+                if (i%2==0){
+                    dotViewArr[i].setImageResource(R.drawable.shape_dot_white);
+                }else {
+                    dotViewArr[i].setImageResource(R.drawable.shape_dot_blue);
+                }
             } else {
                 dotViewArr[i].setImageResource(R.drawable.shape_dot_black);
             }

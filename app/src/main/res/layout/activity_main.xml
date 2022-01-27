@@ -6,14 +6,29 @@
     android:layout_height="match_parent"
     android:background="#FFFAF3"
     tools:context="com.rocbirds.dotcraft.MainActivity">
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/levelMessage"
-        tools:ignore="MissingConstraints"
-        android:gravity="center"
-        android:textSize="140px"
-        android:text="Now Level is"/>
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/levelMessage"
+            tools:ignore="MissingConstraints"
+            android:gravity="center"
+            android:textSize="140px"
+            android:text="Now Level is"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pointMessage"
+            tools:ignore="MissingConstraints"
+            android:gravity="center"
+            android:textSize="140px"
+            android:text="the number of point is"/>
+    </LinearLayout>
     <RelativeLayout
         android:id="@+id/container_layout"
         android:layout_width="290dp"

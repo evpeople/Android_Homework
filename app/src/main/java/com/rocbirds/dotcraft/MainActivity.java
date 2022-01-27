@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private final ImageView[] containerViewArr = new ImageView[9];
     private final ImageView[] dotViewArr = new ImageView[9];
     private TextView levelMessage;
+    private TextView pointMessage;
     private Level level;
     private int levelNum=3;
 //    private boolean first ;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Create","levelNum is "+levelNum);
         initContainerViews();
         levelMessage=findViewById(R.id.levelMessage);
+        pointMessage=findViewById(R.id.pointMessage);
         if (levelNum==3){
             initLevel();
         }else {
@@ -91,10 +93,11 @@ public class MainActivity extends AppCompatActivity {
 
     private  void  makeLevel(){
         level =new RandomLevel(levelNum);
-        refreshView();
-        if (LevelUtils.hasSuccess(level)) {
-            congratulations();
+        while (LevelUtils.hasSuccess(level)) {
+            Log.d("makeLevel","a lucky case");
+            level=new RandomLevel(levelNum);
         }
+        refreshView();
     }
     private void initLevel() {
         level = new Level1();
@@ -108,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     private void refreshView() {
 
         levelMessage.setText("now level is "+(levelNum-3));
+        pointMessage.setText("now point number is"+levelNum);
         int[] containerArr = level.getContainerArray();
         int[] dotArr = level.getDotArray();
         for (int i = 0; i < 9; i++) {
@@ -312,12 +316,11 @@ public class MainActivity extends AppCompatActivity {
         if (levelNum==9) {
             Toast.makeText(this, "恭喜通关！！！！！！！！！！！！！！！！！！", Toast.LENGTH_SHORT).show();
             levelNum=3;
-            makeLevel();
 //            initLevel();
         }else {
             Toast.makeText(this, "恭喜过关", Toast.LENGTH_SHORT).show();
-            makeLevel();
         }
+        makeLevel();
     }
 
 }
